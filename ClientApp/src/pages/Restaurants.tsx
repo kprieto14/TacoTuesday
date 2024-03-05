@@ -1,18 +1,19 @@
 import React from 'react'
 import tacoTuesday from '../images/taco-tuesday.svg'
 import map from '../images/map.png'
-import { CSSStarsProperties } from '../types'
+import { CSSStarsProperties, RestaurantType } from '../types'
+import { useQuery } from 'react-query'
 
 export function Restaurants() {
-  // const { data: restaurants = [] } = useQuery<RestaurantType[]>(
-  //   'restaurants',
-  //   async function () {
-  //     const response = await fetch('/api/restaurants')
-  //     return response.json()
-  //   }
-  // )
+  const { data: restaurants = [] } = useQuery<RestaurantType[]>(
+    'restaurants',
+    async function () {
+      const response = await fetch('/api/restaurants')
+      return response.json()
+    }
+  )
   // USE USESTATE AND USEFFECT INSTEAD, YOU CAN LEARN REDUX LATER
-  //console.log({restaurants})
+  console.log({restaurants})
   
   return (
     <main className="home">
@@ -29,7 +30,7 @@ export function Restaurants() {
 
       <ul className="results">
         <li>
-          <h2>Loli&apos;s Mexican Cravings</h2>
+          <h2>Loli's Mexican Cravings</h2>
           <p>
             <span
               className="stars"
