@@ -4,6 +4,16 @@ import map from '../images/map.png'
 import { CSSStarsProperties } from '../types'
 
 export function Restaurants() {
+  // const { data: restaurants = [] } = useQuery<RestaurantType[]>(
+  //   'restaurants',
+  //   async function () {
+  //     const response = await fetch('/api/restaurants')
+  //     return response.json()
+  //   }
+  // )
+  // USE USESTATE AND USEFFECT INSTEAD, YOU CAN LEARN REDUX LATER
+  //console.log({restaurants})
+  
   return (
     <main className="home">
       <h1>
