@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import tacoTuesday from '../images/taco-tuesday.svg'
 import map from '../images/map.png'
 import { RestaurantType } from '../types'
@@ -6,14 +6,20 @@ import { useQuery } from 'react-query'
 import { SingleRestaurantFromList } from './SingleRestaurantFromList'
 
 export function Restaurants() {
+  const [filterText, setFilterText] = useState('')
+  
   const { data: restaurants = [] } = useQuery<RestaurantType[]>(
-    'restaurants',
+    ['restaurants', filterText],
     async function () {
-      const response = await fetch('/api/Restaurants')
+      const response = await fetch(
+        filterText.length === 0
+          ? '/api/restaurants'
+          : `/api/restaurants?filter=${filterText}`
+      )
       return response.json()
     }
   )
-  // USE USESTATE AND USEFFECT INSTEAD, YOU CAN LEARN REDUX LATER
+  
   console.log( {restaurants} )
   
   return (
@@ -22,7 +28,14 @@ export function Restaurants() {
         <img src={tacoTuesday} alt="Taco Tuesday" />
       </h1>
       <form className="search">
-        <input type="text" placeholder="Search..." />
+        <input
+          type="text"
+          placeholder="Search..."
+          value={filterText}
+          onChange={function (event) {
+            setFilterText(event.target.value)
+          }}
+        />
       </form>
 
       <section className="map">
