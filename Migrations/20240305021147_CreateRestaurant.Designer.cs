@@ -9,7 +9,7 @@ using TacoTuesday.Models;
 namespace TacoTuesday.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240304001049_CreateRestaurant")]
+    [Migration("20240305021147_CreateRestaurant")]
     partial class CreateRestaurant
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

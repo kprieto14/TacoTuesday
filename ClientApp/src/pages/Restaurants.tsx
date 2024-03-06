@@ -8,12 +8,13 @@ export function Restaurants() {
   const { data: restaurants = [] } = useQuery<RestaurantType[]>(
     'restaurants',
     async function () {
-      const response = await fetch('/api/restaurants')
+      const response = await fetch('/api/Restaurants')
+      console.log(response)
       return response.json()
     }
   )
   // USE USESTATE AND USEFFECT INSTEAD, YOU CAN LEARN REDUX LATER
-  console.log({restaurants})
+  console.log( {restaurants} )
   
   return (
     <main className="home">
@@ -30,7 +31,7 @@ export function Restaurants() {
 
       <ul className="results">
         <li>
-          <h2>Loli's Mexican Cravings</h2>
+          <h2>Loli&apos;s Mexican Cravings</h2>
           <p>
             <span
               className="stars"
