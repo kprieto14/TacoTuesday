@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import tacoTuesday from '../images/taco-tuesday.svg'
-import map from '../images/map.png'
 import { RestaurantType } from '../types'
 import { useQuery } from 'react-query'
 import { SingleRestaurantFromList } from './SingleRestaurantFromList'
 
+import tacoTuesday from '../images/taco-tuesday.svg'
+import map from '../images/map.png'
+
 export function Restaurants() {
   const [filterText, setFilterText] = useState('')
-  
+
   const { data: restaurants = [] } = useQuery<RestaurantType[]>(
     ['restaurants', filterText],
     async function () {

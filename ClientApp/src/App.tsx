@@ -1,6 +1,8 @@
 import React from 'react'
-import { Restaurants } from './pages/Restaurants'
+
+//import { Restaurants } from './pages/Restaurants'
 import avatar from './images/avatar.png'
+import { NewRestaurant } from './pages/NewRestaruant'
 
 export function App() {
   return (<>
@@ -19,7 +21,7 @@ export function App() {
           </li>
         </ul>
       </header>
-      <Restaurants />
+      <NewRestaurant />
       <footer>
         <p>
           Built with <i className="fa fa-heart"></i> in St Petersburg, Florida.
