@@ -10,7 +10,7 @@ export function App() {
         <ul>
           <li>
             <nav>
-              <Link to={'/new'}>
+              <Link to='/new'>
                 <i className="fa fa-plus"></i> Restaurant
               </Link>
               <p>Welcome back, Steve!</p>

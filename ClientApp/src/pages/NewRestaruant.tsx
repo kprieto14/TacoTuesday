@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { RestaurantType } from '../types'
+import { APIError, RestaurantType } from '../types'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router'
 
@@ -10,10 +10,16 @@ async function submitNewRestaurant(restaurantToCreate: RestaurantType) {
     body: JSON.stringify(restaurantToCreate),
   })
 
-  return response.json()
+  if (response.ok) {
+    return response.json()
+  } else {
+    throw await response.json()
+  }
 }
 
 export function NewRestaurant() {
+  const [errorMessage, setErrorMessage] = useState('')
+
   const [newRestaurant, setNewRestaurant] = useState<RestaurantType>({
     name: '',
     description: '',
@@ -26,6 +32,9 @@ export function NewRestaurant() {
   const createNewRestaurant = useMutation(submitNewRestaurant, {
     onSuccess: function() {
       navigate('/')
+    },
+    onError: function (apiError: APIError) {
+      setErrorMessage(Object.values(apiError.errors).join(' '))
     },
   })
 
@@ -54,6 +63,7 @@ export function NewRestaurant() {
         <h2>Add a Restaurant</h2>
       </nav>
       <form onSubmit={handleFormSubmit}>
+        {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
         <p className="form-input">
           <label htmlFor="name">Name</label>
           <input
