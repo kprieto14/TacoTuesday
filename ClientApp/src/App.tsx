@@ -1,8 +1,8 @@
 import React from 'react'
-
-//import { Restaurants } from './pages/Restaurants'
+import { Routes, Route, Link  } from 'react-router-dom'
 import avatar from './images/avatar.png'
 import { NewRestaurant } from './pages/NewRestaruant'
+import { Restaurants } from './pages/Restaurants'
 
 export function App() {
   return (<>
@@ -10,9 +10,9 @@ export function App() {
         <ul>
           <li>
             <nav>
-              <a href="#">
+              <Link to={'/new'}>
                 <i className="fa fa-plus"></i> Restaurant
-              </a>
+              </Link>
               <p>Welcome back, Steve!</p>
             </nav>
           </li>
@@ -21,7 +21,12 @@ export function App() {
           </li>
         </ul>
       </header>
-      <NewRestaurant />
+
+      <Routes>
+        <Route path='/' element={<Restaurants/>}/>
+        <Route path='/new' element={<NewRestaurant/>} />
+      </Routes>
+
       <footer>
         <p>
           Built with <i className="fa fa-heart"></i> in St Petersburg, Florida.

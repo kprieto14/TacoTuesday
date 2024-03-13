@@ -22,8 +22,9 @@ export function NewRestaurant() {
   })
 
   const navigate = useNavigate()
+
   const createNewRestaurant = useMutation(submitNewRestaurant, {
-    onSuccess: function () {
+    onSuccess: function() {
       navigate('/')
     },
   })
