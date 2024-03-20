@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { APIError, RestaurantType } from '../types'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 
 async function submitNewRestaurant(restaurantToCreate: RestaurantType) {
   const response = await fetch('/api/Restaurants', {
@@ -57,9 +58,9 @@ export function NewRestaurant() {
   return (
     <main className="page">
       <nav>
-        <a href="/">
-          <i className="fa fa-home"></i>
-        </a>
+      <Link to="/">
+        <i className="fa fa-home"></i>
+      </Link>
         <h2>Add a Restaurant</h2>
       </nav>
       <form onSubmit={handleFormSubmit}>
@@ -71,6 +72,7 @@ export function NewRestaurant() {
             className="form-control"
             name="name"
             value={newRestaurant.name}
+            required
             onChange={handleStringFieldChange}
           />
         </p>
@@ -90,6 +92,7 @@ export function NewRestaurant() {
           <textarea
             name="address"
             value={newRestaurant.address}
+            required
             onChange={handleStringFieldChange}
           ></textarea>
         </p>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { CSSStarsProperties, RestaurantType } from '../types'
+import { Link } from 'react-router-dom'
 
 type SingleRestaurantFromListProps = {
   restaurant: RestaurantType
@@ -8,7 +9,12 @@ type SingleRestaurantFromListProps = {
 export function SingleRestaurantFromList(props: SingleRestaurantFromListProps) {
   return (
     <li key={props.restaurant.id}>
-      <h2>{props.restaurant.name}</h2>
+      <h2>
+        <Link to={`/restaurants/${props.restaurant.id}`}>
+          {props.restaurant.name}
+        </Link>
+      </h2>
+      
       <p>
         <span
           className="stars"

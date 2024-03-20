@@ -3,6 +3,7 @@ import { Routes, Route, Link  } from 'react-router-dom'
 import avatar from './images/avatar.png'
 import { NewRestaurant } from './pages/NewRestaruant'
 import { Restaurants } from './pages/Restaurants'
+import { Restaurant } from './pages/Restaurant'
 
 export function App() {
   return (<>
@@ -24,7 +25,8 @@ export function App() {
 
       <Routes>
         <Route path='/' element={<Restaurants/>}/>
-        <Route path='/new' element={<NewRestaurant/>} />
+        <Route path='/new' element={<NewRestaurant/>}/>
+        <Route path='/:id' element={<Restaurant/>}/>s
       </Routes>
 
       <footer>
