@@ -26,7 +26,7 @@ export function App() {
       <Routes>
         <Route path='/' element={<Restaurants/>}/>
         <Route path='/new' element={<NewRestaurant/>}/>
-        <Route path='/:id' element={<Restaurant/>}/>s
+        <Route path='/restaurants/:id' element={<Restaurant/>}/>
       </Routes>
 
       <footer>
