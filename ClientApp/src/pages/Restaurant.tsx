@@ -3,6 +3,7 @@ import { useMutation, useQuery } from 'react-query'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { CSSStarsProperties, RestaurantType, ReviewType } from '../types'
+import { format } from 'date-fns/format'
 
 
 async function loadOneRestaurant(id: string | undefined) {
@@ -39,6 +40,8 @@ const NullRestaurant: RestaurantType = {
   telephone: '',
   reviews: [],
 }
+
+const dateFormat = `EEEE, MMMM do, yyyy 'at' h:mm aaa`
 
 export function Restaurant() {
     const { id } = useParams<{ id: string }>()
@@ -116,7 +119,11 @@ export function Restaurant() {
                   style={{ '--rating': review.stars } as CSSStarsProperties}
                   aria-label={`Star rating of this location is ${review.stars} out of 5.`}
                 ></span>
-                <time>{review.createdAt}</time>
+                <time>
+                {review.createdAt
+                  ? format(new Date(review.createdAt), dateFormat)
+                  : null}
+              </time>
               </div>
             </li>
           ))}
