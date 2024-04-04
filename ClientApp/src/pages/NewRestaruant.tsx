@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { APIError, RestaurantType } from '../types'
 import { useMutation } from 'react-query'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router' 
 import { Link } from 'react-router-dom'
 
 async function submitNewRestaurant(restaurantToCreate: RestaurantType) {

@@ -4,6 +4,7 @@ import avatar from './images/avatar.png'
 import { NewRestaurant } from './pages/NewRestaruant'
 import { Restaurants } from './pages/Restaurants'
 import { Restaurant } from './pages/Restaurant'
+import { SignUp } from './pages/SignUp'
 
 export function App() {
   return (<>
@@ -14,6 +15,7 @@ export function App() {
               <Link to='/new'>
                 <i className="fa fa-plus"></i> Restaurant
               </Link>
+              <Link to="/signup">Sign Up</Link>
               <p>Welcome back, Steve!</p>
             </nav>
           </li>
@@ -27,6 +29,7 @@ export function App() {
         <Route path='/' element={<Restaurants/>}/>
         <Route path='/new' element={<NewRestaurant/>}/>
         <Route path='/restaurants/:id' element={<Restaurant/>}/>
+        <Route path="/signup" element={<SignUp/>}/>
       </Routes>
 
       <footer>
