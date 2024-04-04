@@ -9,47 +9,46 @@ using TacoTuesday.Models;
 
 namespace TacoTuesday.Controllers
 {
-    // All of these routes will be at the base URL:     /api/Reviews
+    // All of these routes will be at the base URL:     /api/Users
     // That is what "api/[controller]" means below. It uses the name of the controller
-    // in this case ReviewsController to determine the URL
+    // in this case UsersController to determine the URL
     [Route("api/[controller]")]
     [ApiController]
-    public class ReviewsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         // This is the variable you use to have access to your database
         private readonly DatabaseContext _context;
 
         // Constructor that receives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public ReviewsController(DatabaseContext context)
+        public UsersController(DatabaseContext context)
         {
             _context = context;
         }
 
-
-        // PUT: api/Reviews/5
+        // PUT: api/Users/5
         //
-        // Update an individual review with the requested id. The id is specified in the URL
+        // Update an individual user with the requested id. The id is specified in the URL
         // In the sample URL above it is the `5`. The "{id} in the [HttpPut("{id}")] is what tells dotnet
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
-        // In addition the `body` of the request is parsed and then made available to us as a Review
-        // variable named review. The controller matches the keys of the JSON object the client
-        // supplies to the names of the attributes of our Review POCO class. This represents the
+        // In addition the `body` of the request is parsed and then made available to us as a User
+        // variable named user. The controller matches the keys of the JSON object the client
+        // supplies to the names of the attributes of our User POCO class. This represents the
         // new values for the record.
         //
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(int id, Review review)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
             // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-            if (id != review.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            // Tell the database to consider everything in review to be _updated_ values. When
-            // the save happens the database will _replace_ the values in the database with the ones from review
-            _context.Entry(review).State = EntityState.Modified;
+            // Tell the database to consider everything in user to be _updated_ values. When
+            // the save happens the database will _replace_ the values in the database with the ones from user
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +59,7 @@ namespace TacoTuesday.Controllers
             {
                 // Ooops, looks like there was an error, so check to see if the record we were
                 // updating no longer exists.
-                if (!ReviewExists(id))
+                if (!UserExists(id))
                 {
                     // If the record we tried to update was already deleted by someone else,
                     // return a `404` not found
@@ -75,55 +74,55 @@ namespace TacoTuesday.Controllers
             }
 
             // Return a copy of the updated data
-            return Ok(review);
+            return Ok(user);
         }
 
-        // POST: api/Reviews
+        // POST: api/Users
         //
-        // Creates a new review in the database.
+        // Creates a new user in the database.
         //
-        // The `body` of the request is parsed and then made available to us as a Review
-        // variable named review. The controller matches the keys of the JSON object the client
-        // supplies to the names of the attributes of our Review POCO class. This represents the
+        // The `body` of the request is parsed and then made available to us as a User
+        // variable named user. The controller matches the keys of the JSON object the client
+        // supplies to the names of the attributes of our User POCO class. This represents the
         // new values for the record.
         //
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
             // Indicate to the database context we want to add this new record
-            _context.Reviews.Add(review);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             // Return a response that indicates the object was created (status code `201`) and some additional
             // headers with details of the newly created object.
-            return CreatedAtAction("GetReview", new { id = review.Id }, review);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Reviews/5
+        // DELETE: api/Users/5
         //
-        // Deletes an individual review with the requested id. The id is specified in the URL
+        // Deletes an individual user with the requested id. The id is specified in the URL
         // In the sample URL above it is the `5`. The "{id} in the [HttpDelete("{id}")] is what tells dotnet
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReview(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            // Find this review by looking for the specific id
-            var review = await _context.Reviews.FindAsync(id);
-            if (review == null)
+            // Find this user by looking for the specific id
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
-                // There wasn't a review with that id so return a `404` not found
+                // There wasn't a user with that id so return a `404` not found
                 return NotFound();
             }
 
             // Tell the database we want to remove this record
-            _context.Reviews.Remove(review);
+            _context.Users.Remove(user);
 
             // Tell the database to perform the deletion
             await _context.SaveChangesAsync();
 
             // Return a copy of the deleted data
-            return Ok(review);
+            return Ok(user);
         }
     }
 }
