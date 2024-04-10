@@ -98,6 +98,7 @@ namespace TacoTuesday.Controllers
                 // Return a response that indicates the object was created (status code `201`) and some additional
                 // headers with details of the newly created object.
                 return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            }
 
             catch (Microsoft.EntityFrameworkCore.DbUpdateException)
             {
