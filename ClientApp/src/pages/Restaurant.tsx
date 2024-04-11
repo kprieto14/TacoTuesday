@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { format } from 'date-fns/format'
 import { CSSStarsProperties, NewReviewType, RestaurantType } from '../types'
 import { authHeader, isLoggedIn } from '../auth'
-import { Stars } from './Stars'
+import { Stars } from '../components/Stars'
 
 
 async function loadOneRestaurant(id: string | undefined) {

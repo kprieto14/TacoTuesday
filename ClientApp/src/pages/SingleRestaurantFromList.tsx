@@ -1,7 +1,7 @@
 import React from 'react'
 import { RestaurantType } from '../types'
 import { Link } from 'react-router-dom'
-import { Stars } from './Stars'
+import { Stars } from '../components/Stars'
 
 type SingleRestaurantFromListProps = {
   restaurant: RestaurantType
