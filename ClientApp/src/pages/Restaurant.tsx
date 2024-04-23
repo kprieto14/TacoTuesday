@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { format } from 'date-fns/format'
 import { CSSStarsProperties, NewReviewType, RestaurantType } from '../types'
-import { authHeader, isLoggedIn } from '../auth'
+import { authHeader, isLoggedIn, getUserId } from '../auth'
 import { Stars } from '../components/Stars'
 
 
@@ -50,20 +50,43 @@ const NullRestaurant: RestaurantType = {
 const dateFormat = `EEEE, MMMM do, yyyy 'at' h:mm aaa`
 
 export function Restaurant() {
-    const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
 
-    const { refetch, data: restaurant = NullRestaurant } =
+  const { id } = useParams<{ id: string }>()
+
+  const { refetch, data: restaurant = NullRestaurant } =
     useQuery<RestaurantType>(['one-restaurant', id], () =>
       loadOneRestaurant(id)
-    )
+  )
   const [newReview, setNewReview] = useState<NewReviewType>({
-   id: undefined,
+  id: undefined,
     body: '',
     stars: 5,
     summary: '',
     createdAt: new Date(),
     restaurantId: Number(id),
   })
+
+  async function handleDelete(id: number | undefined) {
+    // If we don't know the id, don't do anything.
+    // This could happen because the restaurant might have an undefined id before it is loaded. In that case we don't want to call the API since the URL won't be correct.
+    if (id === undefined) {
+      return
+    }
+    const response = await fetch(`/api/Restaurants/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: authHeader(),
+      },
+    })
+  
+    if (response.ok) {
+      return response.json()
+    } else {
+      throw await response.json()
+    }
+  }
 
   const createNewReview = useMutation(submitNewReview, {
     onSuccess: function () {
@@ -74,6 +97,16 @@ export function Restaurant() {
         stars: 5,
         summary: '',
       })
+    },
+  })
+
+  // Delete restaurant
+  const deleteRestaurant = useMutation(handleDelete, {
+    onSuccess: function () {
+      navigate('/')
+    },
+    onError: function () {
+      console.log('ooops, error')
     },
   })
 
@@ -90,8 +123,8 @@ export function Restaurant() {
     setNewReview({ ...newReview, stars: newStars })
   }
 
-    return (
-        <main className="page">
+  return (
+    <main className="page">
       <nav>
       <Link to="/">
           <i className="fa fa-home"></i>
@@ -105,6 +138,30 @@ export function Restaurant() {
       </p>
 
       <address>{restaurant.address}</address>
+
+      {restaurant.userId === getUserId() ? (
+        <>
+          <p>
+            <button
+              onClick={function (event) {
+                event.preventDefault()
+
+                deleteRestaurant.mutate(restaurant.id)
+              }}
+            >
+              Delete!
+            </button>
+          </p>
+          <p>
+            <button>
+              <Link className="button" to={`/restaurants/${restaurant.id}/edit`}>
+                Edit
+              </Link>
+            </button>
+          </p>
+        </>
+      ) : null}
+
       <hr />
       <h3>Reviews for {restaurant.name}</h3>
 
@@ -245,5 +302,5 @@ export function Restaurant() {
         </>
       ) : null}
     </main>
-    )
+  )
 }
