@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { Link, useNavigate } from 'react-router-dom'
 import { format } from 'date-fns/format'
 import { CSSStarsProperties, NewReviewType, RestaurantType } from '../types'
-import { authHeader, isLoggedIn, getUserId } from '../auth'
+import { authHeader, isLoggedIn, getUserId, getUser } from '../auth'
 import { Stars } from '../components/Stars'
 
 
@@ -21,7 +21,6 @@ async function loadOneRestaurant(id: string | undefined) {
 async function submitNewReview(review: NewReviewType) {
   const response = await fetch(`/api/Reviews`, {
     method: 'POST',
-    // headers: { 'content-type': 'application/json' },
     headers: {
       'content-type': 'application/json',
       Authorization: authHeader(),
@@ -54,12 +53,14 @@ export function Restaurant() {
 
   const { id } = useParams<{ id: string }>()
 
+  const user = getUser()
+
   const { refetch, data: restaurant = NullRestaurant } =
     useQuery<RestaurantType>(['one-restaurant', id], () =>
       loadOneRestaurant(id)
   )
   const [newReview, setNewReview] = useState<NewReviewType>({
-  id: undefined,
+    id: user.id,
     body: '',
     stars: 5,
     summary: '',
@@ -67,25 +68,31 @@ export function Restaurant() {
     restaurantId: Number(id),
   })
 
+  // Delete restaurant API
   async function handleDelete(id: number | undefined) {
     // If we don't know the id, don't do anything.
     // This could happen because the restaurant might have an undefined id before it is loaded. In that case we don't want to call the API since the URL won't be correct.
     if (id === undefined) {
       return
     }
-    const response = await fetch(`/api/Restaurants/${id}`, {
+    await fetch(`/api/Restaurants/${id}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
         Authorization: authHeader(),
       },
     })
-  
-    if (response.ok) {
-      return response.json()
-    } else {
-      throw await response.json()
-    }
+  }
+
+  // Delete review API
+  async function handleDeleteReview(reviewId: number | undefined) {
+   await fetch(`/api/Reviews/${reviewId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: authHeader(),
+      },
+    })
   }
 
   const createNewReview = useMutation(submitNewReview, {
@@ -104,6 +111,17 @@ export function Restaurant() {
   const deleteRestaurant = useMutation(handleDelete, {
     onSuccess: function () {
       navigate('/')
+    },
+    onError: function () {
+      console.log('ooops, error')
+    },
+  })
+
+  // Delete review
+  const deleteReview = useMutation(handleDeleteReview, {
+    onSuccess: function () {
+      refetch()
+      console.log('Success')
     },
     onError: function () {
       console.log('ooops, error')
@@ -181,11 +199,26 @@ export function Restaurant() {
                   aria-label={`Star rating of this location is ${review.stars} out of 5.`}
                 ></span>
                 <time>
-                {review.createdAt
-                  ? format(new Date(review.createdAt), dateFormat)
-                  : null}
-              </time>
+                  {review.createdAt
+                    ? format(new Date(review.createdAt), dateFormat)
+                    : null}
+                </time>
               </div>
+
+              {isLoggedIn() && review.user.id === user.id && (
+              <div>
+                <button
+                  className="small"
+                  onClick={function (event) {
+                    event.preventDefault()
+
+                    deleteReview.mutate(review.id)
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
             </li>
           ))}
       </ul>
