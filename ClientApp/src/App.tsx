@@ -7,6 +7,7 @@ import { Restaurant } from './pages/Restaurant'
 import { SignUp } from './pages/SignUp'
 import { SignIn } from './pages/SignIn'
 import { getUser, isLoggedIn, logout } from './auth'
+import { EditRestaurant } from './pages/EditRestaurant'
 
 export function App() {
   const user = getUser()
@@ -57,6 +58,7 @@ export function App() {
         <Route path='/restaurants/:id' element={<Restaurant/>}/>
         <Route path="/signup" element={<SignUp/>}/>
         <Route path='/signin' element={<SignIn/>}/>
+        <Route path='/restaurant/:id/edit' element={<EditRestaurant/>}/>
       </Routes>
 
       <footer>
